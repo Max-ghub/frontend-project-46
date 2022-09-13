@@ -1,16 +1,16 @@
 import path from 'node:path';
 import { readFileSync } from 'node:fs';
 import _ from 'lodash';
+import parseData from './parsers.js';
 
+// const getAbslPath = (fileName) => path.resolve(process.cwd(), `__fixtures__/${fileName}`);
 const getAbslPath = (fileName) => path.resolve(process.cwd(), fileName);
 
-const parseFile = (file) => JSON.parse(file);
-
-const getDataDifferences = (firstFileData, secondFileData) => {
-  const firstDataParsed = parseFile(firstFileData);
+const getDataDifferences = (firstFile, secondFile) => {
+  const firstDataParsed = parseData(firstFile);
   const firstDataKeys = _.keys(firstDataParsed);
 
-  const secondDataParsed = parseFile(secondFileData);
+  const secondDataParsed = parseData(secondFile);
   const secondDataKeys = _.keys(secondDataParsed);
 
   const unionDataKeys = _.union(firstDataKeys, secondDataKeys);
@@ -70,16 +70,18 @@ const createTextDifferencesOutput = (differences) => {
 };
 
 const genDiff = (firstFileName, secondFileName) => {
-  const firstFilePath = getAbslPath(firstFileName);
-  const firstFileData = readFileSync(firstFilePath, 'utf-8');
+  const firstFile = { path: getAbslPath(firstFileName) };
+  firstFile.format = path.extname(firstFile.path).slice(1);
+  firstFile.data = readFileSync(firstFile.path, 'utf-8');
 
-  const secondFilePath = getAbslPath(secondFileName);
-  const secondFileData = readFileSync(secondFilePath, 'utf-8');
+  const secondFile = { path: getAbslPath(secondFileName) };
+  secondFile.format = path.extname(secondFile.path).slice(1);
+  secondFile.data = readFileSync(secondFile.path, 'utf-8');
 
-  const differences = getDataDifferences(firstFileData, secondFileData);
-  const differencesOutput = createTextDifferencesOutput(differences);
+  const filesDifferences = getDataDifferences(firstFile, secondFile);
+  const outputDifferences = createTextDifferencesOutput(filesDifferences);
 
-  return differencesOutput;
+  return outputDifferences;
 };
-
+// console.log(genDiff('file1.json', 'file2.json'));
 export default genDiff;
