@@ -9,13 +9,11 @@ const getAbslPath = (fileName) => path.resolve(process.cwd(), fileName);
 const getDataDifferences = (firstFile, secondFile) => {
   const firstDataParsed = parseData(firstFile);
   const firstDataKeys = _.keys(firstDataParsed);
-
   const secondDataParsed = parseData(secondFile);
   const secondDataKeys = _.keys(secondDataParsed);
 
   const unionDataKeys = _.union(firstDataKeys, secondDataKeys);
   const sortedDataKeys = _.sortBy(unionDataKeys);
-
   const differences = sortedDataKeys.map((key) => {
     if (!_.has(firstDataParsed, key)) {
       return {
@@ -45,7 +43,6 @@ const getDataDifferences = (firstFile, secondFile) => {
       secondValue: secondDataParsed[key],
     };
   });
-
   return differences;
 };
 
