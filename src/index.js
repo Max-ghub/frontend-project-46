@@ -2,11 +2,11 @@ import path from 'node:path';
 import { readFileSync } from 'node:fs';
 import _ from 'lodash';
 
-const getAbslPath = (fileName) => path.join(process.cwd(), fileName);
+const getAbslPath = (fileName) => path.resolve(process.cwd(), fileName);
+
+const parseFile = (file) => JSON.parse(file);
 
 const getDataDifferences = (firstFileData, secondFileData) => {
-  const parseFile = (file) => JSON.parse(file);
-
   const firstDataParsed = parseFile(firstFileData);
   const firstDataKeys = _.keys(firstDataParsed);
 
@@ -60,14 +60,14 @@ const createTextDifferencesOutput = (differences) => {
         return `    ${difference.key}: ${difference.value}`;
       case 'new':
         return `  - ${difference.key}: ${difference.firstValue}\n`
-          + `  + ${difference.key}: ${difference.secondValue}`;
+             + `  + ${difference.key}: ${difference.secondValue}`;
       default:
         throw new Error(`Unknown type: ${difference.type}`);
     }
   });
 
   return `{\n${output.join('\n')}\n}`;
-}
+};
 
 const genDiff = (firstFileName, secondFileName) => {
   const firstFilePath = getAbslPath(firstFileName);
