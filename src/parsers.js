@@ -8,7 +8,7 @@ const parseData = ({ data, format }) => {
     case 'yml':
       return YMLParse(data);
     default:
-      throw new Error(`Unknown format: ${format}`);
+      throw new Error();
   }
 };
 
