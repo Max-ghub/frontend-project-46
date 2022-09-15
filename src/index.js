@@ -3,9 +3,10 @@ import { readFileSync } from 'node:fs';
 import _ from 'lodash';
 import parseData from './parsers.js';
 import getStylishFormat from './formatters/stylish.js';
+import getPlainFromat from './formatters/plain.js';
 
 // const getAbslPath = (fileName) => path
-//   .resolve(process.cwd(), `__fixtures__/commonDifference/${fileName}`);
+//   .resolve(process.cwd(), `__fixtures__/${fileName}`);
 const getAbslPath = (fileName) => path.resolve(process.cwd(), fileName);
 
 const getDataDifferences = (firstData, secondData) => {
@@ -72,11 +73,14 @@ const genDiff = (firstFileName, secondFileName, format = 'stylish') => {
 
   const filesDifferences = getDataDifferences(firstFile.parsedData, secondFile.parsedData);
 
-  if (format === 'stylish') {
-    return getStylishFormat(filesDifferences);
+  switch (format) {
+    case 'stylish':
+      return getStylishFormat(filesDifferences);
+    case 'plain':
+      return getPlainFromat(filesDifferences);
+    default:
+      throw new Error(`Unknown format: ${format}`);
   }
-
-  return undefined;
 };
-// console.log(genDiff('file1.json', 'file2.json'));
+// console.log(genDiff('file1.json', 'file2.json', 'plain'));
 export default genDiff;
