@@ -59,19 +59,17 @@ const getDataDifferences = (firstData, secondData) => {
 };
 
 const genDiff = (firstFileName, secondFileName, format = 'stylish') => {
-  const firstFile = {};
-  firstFile.path = getAbslPath(firstFileName);
-  firstFile.format = path.extname(firstFile.path).slice(1);
-  firstFile.data = readFileSync(firstFile.path, 'utf-8');
-  firstFile.parsedData = parseData(firstFile);
+  const firstFilePath = getAbslPath(firstFileName);
+  const firstFileData = readFileSync(firstFilePath, 'utf-8');
+  const firstFileFormat = path.extname(firstFilePath).slice(1);
+  const firstFileParsedData = parseData(firstFileData, firstFileFormat);
 
-  const secondFile = {};
-  secondFile.path = getAbslPath(secondFileName);
-  secondFile.format = path.extname(secondFile.path).slice(1);
-  secondFile.data = readFileSync(secondFile.path, 'utf-8');
-  secondFile.parsedData = parseData(secondFile);
+  const secondFilePath = getAbslPath(secondFileName);
+  const secondFileData = readFileSync(secondFilePath, 'utf-8');
+  const secondFileFormat = path.extname(secondFilePath).slice(1);
+  const secondFileParsedData = parseData(secondFileData, secondFileFormat);
 
-  const filesDifferences = getDataDifferences(firstFile.parsedData, secondFile.parsedData);
+  const filesDifferences = getDataDifferences(firstFileParsedData, secondFileParsedData);
 
   switch (format) {
     case 'stylish':

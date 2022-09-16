@@ -1,6 +1,6 @@
 import { load as YMLParse } from 'js-yaml';
 
-const parseData = ({ data, format }) => {
+const parseData = (data, format) => {
   switch (format) {
     case 'json':
       return JSON.parse(data);
