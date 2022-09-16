@@ -6,8 +6,8 @@ import getStylishFormat from './formatters/stylish.js';
 import getPlainFromat from './formatters/plain.js';
 
 // const getAbslPath = (fileName) => path
-//   .resolve(process.cwd(), `__fixtures__/${fileName}`);
-const getAbslPath = (fileName) => path.resolve(process.cwd(), fileName);
+//   .resolve(process.cwd(), `__fixtures__/${fileName}`); // +Debug
+const getAbslPath = (fileName) => path.resolve(process.cwd(), fileName); // -Debug
 
 const getDataDifferences = (firstData, secondData) => {
   const firstDataKeys = _.keys(firstData);
@@ -78,9 +78,12 @@ const genDiff = (firstFileName, secondFileName, format = 'stylish') => {
       return getStylishFormat(filesDifferences);
     case 'plain':
       return getPlainFromat(filesDifferences);
+    case 'json':
+      return JSON.stringify(filesDifferences);
     default:
       throw new Error(`Unknown format: ${format}`);
   }
 };
-// console.log(genDiff('file1.json', 'file2.json', 'plain'));
+
+// console.log(genDiff('file1.json', 'file2.json', 'plain')); // +Debug
 export default genDiff;

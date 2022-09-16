@@ -1,6 +1,6 @@
 import _ from 'lodash';
-
 // spC - spaces count
+
 const doIntd = (depth, spC = 4) => ' '.repeat(depth * spC - 2);
 
 const getValue = (value, depth, spC) => {

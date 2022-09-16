@@ -50,6 +50,25 @@ test('Difference plain format', () => {
   expect(YAMLgenDiff).toEqual(resultPlain);
 });
 
+test('Difference JSON format', () => {
+  const resultJSON = readFileSync(getPath('JSONResult.txt'), 'utf-8').replaceAll('\\', '');
+
+  const JSON1Path = getPath('file1.json');
+  const JSON2Path = getPath('file2.json');
+  const JSONgenDiff = genDiff(JSON1Path, JSON2Path, 'json');
+  expect(JSONgenDiff).toEqual(resultJSON);
+
+  const YML1Path = getPath('file1.yml');
+  const YML2Path = getPath('file2.yml');
+  const YMLgenDiff = genDiff(YML1Path, YML2Path, 'json');
+  expect(YMLgenDiff).toEqual(resultJSON);
+
+  const YAML1Path = getPath('file1.yaml');
+  const YAML2Path = getPath('file2.yaml');
+  const YAMLgenDiff = genDiff(YAML1Path, YAML2Path, 'json');
+  expect(YAMLgenDiff).toEqual(resultJSON);
+});
+
 test('Throw errors', () => {
   const JSON1Path = getPath('file1.json');
   const JSON2Path = getPath('file2.json');
