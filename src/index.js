@@ -18,38 +18,34 @@ const getDataDifferences = (firstData, secondData) => {
 
   const differences = sortedDataKeys.map((key) => {
     if (_.isPlainObject(firstData[key]) && _.isPlainObject(secondData[key])) {
-      const differences = {
+      return {
         key,
         type: 'obj',
         value: getDataDifferences(firstData[key], secondData[key]),
       };
-      return differences;
     }
     if (!_.has(firstData, key)) {
-      const differences = {
+      return {
         key,
         type: 'add',
         value: secondData[key],
       };
-      return differences;
     }
     if (!_.has(secondData, key)) {
-      const differences = {
+      return {
         key,
         type: 'del',
         value: firstData[key],
       };
-      return differences;
     }
     if (firstData[key] === secondData[key]) {
-      const differences = {
+      return {
         key,
         type: 'old',
         value: firstData[key],
       };
-      return differences;
     }
-    const differences = {
+    return {
       key,
       type: 'new',
       value: {
@@ -57,7 +53,6 @@ const getDataDifferences = (firstData, secondData) => {
         second: secondData[key],
       },
     };
-    return differences;
   });
 
   return differences;
